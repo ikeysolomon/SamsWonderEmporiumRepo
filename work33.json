@@ -1,0 +1,191 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "example-questionnaire",
+  "status": "draft",
+  "subjectType": [
+    "Patient"
+  ],
+  "item": [
+    {
+      "linkId": "question-group",
+      "text": "Health Questions",
+      "type": "group",
+      "item": [
+{
+  "linkId": "Human-1",
+  "text": "Is the patient Human?",
+  "type": "choice",
+  "repeats": true,
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+      "valueCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://hl7.org/fhir/questionnaire-item-control",
+            "code": "check-box"
+          }
+        ]
+      }
+    }
+  ],
+  "answerOption": [
+    {
+      "valueString": "Yes",
+      "text": "Yes"
+    },
+    {
+      "valueString": "No",
+      "text": "No"
+    }
+  ]
+},
+  {
+          "linkId": "textbox-1",
+          "text": "Text box to enter stuff into",
+          "type": "text"
+        },
+
+        {
+          "linkId": "COVID19-1",
+          "text": "Does the patient require vaccination for COVID-19?",
+          "type": "boolean"
+        },
+        {
+          "linkId": "HepA-1",
+          "text": "Does the patient require vaccination for Hepatitis A?",
+          "type": "boolean"
+        },
+        {
+          "linkId": "HepB-1",
+          "text": "Does the patient require vaccination for Hepatitis B?",
+          "type": "boolean"
+        },
+        {
+          "linkId": "box",
+          "text": "This receives input",
+          "type": "text",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+              "valueExpression": {
+                "language": "text/fhirpath",
+                "expression": "iif(%COVID19b = 'void', '', %COVID19b + '\n') + iif(%HepA2 = 'void', '', %HepA2 + '\n') + iif(%HepB2 = 'void', '', %HepB2)"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "box2",
+          "text": "Questions answered",
+          "type": "string",
+          "readOnly": "true",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+              "valueExpression": {
+                "language": "text/fhirpath",
+"expression": "(iif(%resource.item.where(linkId='question-group').item.where(linkId='COVID19-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='COVID19-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='HepA-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='HepA-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='HepB-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='HepB-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='Human-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='Human-1').answer.empty().count(), 0)).toString() + ' / 4'"
+              }
+            }
+          ]
+        },
+              {
+          "linkId": "box3",
+          "text": "Questions answered",
+          "type": "string",
+          "readOnly": "true",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+              "valueExpression": {
+                "language": "text/fhirpath",
+"expression": "(iif(%resource.item.where(linkId='question-group').item.where(linkId='COVID19-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='COVID19-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='HepA-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='HepA-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='HepB-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='HepB-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='Human-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='Human-1').answer.valueString.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='textbox-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='textbox-1').answer.valueString.count(), 0)).toString() + ' / 5'"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "box4",
+          "text": "Questions answered",
+          "type": "display",
+          "_text" : {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+              "valueExpression": {
+                "language": "text/fhirpath",
+                "expression": "%poo + ' questions answered'"
+              }
+            }
+          ]
+          }
+        }
+      ]
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "name": "poo",
+        "language": "text/fhirpath",
+"expression": "(iif(%resource.item.where(linkId='question-group').item.where(linkId='COVID19-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='COVID19-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='HepA-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='HepA-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='HepB-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='HepB-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='Human-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='Human-1').answer.empty().count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='textbox-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='textbox-1').answer.valueString.count(), 0)).toString() + ' / 5'"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "name": "COVID19a",
+        "language": "text/fhirpath",
+        "expression": "%resource.item.where(linkId='question-group').item.where(linkId='COVID19-1').answer.valueBoolean"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "name": "COVID19b",
+        "language": "text/fhirpath",
+        "expression": "iif(%COVID19a, 'Consider vaccination for COVID-19', 'void')"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "name": "HepA1",
+        "language": "text/fhirpath",
+        "expression": "%resource.item.where(linkId='question-group').item.where(linkId='HepA-1').answer.valueBoolean"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "name": "HepA2",
+        "language": "text/fhirpath",
+        "expression": "iif(%HepA1, 'Consider vaccination for HepA', 'void')"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "name": "HepB1",
+        "language": "text/fhirpath",
+        "expression": "%resource.item.where(linkId='question-group').item.where(linkId='HepB-1').answer.valueBoolean"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/variable",
+      "valueExpression": {
+        "name": "HepB2",
+        "language": "text/fhirpath",
+        "expression": "iif(%HepB1, 'Consider vaccination for HepB', 'void')"
+      }
+    }
+  ]
+}
+
+// this line handles multiplecheckboxes
+"expression": "(iif(%resource.item.where(linkId='question-group').item.where(linkId='COVID19-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='COVID19-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='HepA-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='HepA-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='HepB-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='HepB-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='Human-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='Human-1').answer.empty().count(), 0)).toString() + ' / 4'"
+
+// this line handles single checkboxes
+"expression": "(iif(%resource.item.where(linkId='question-group').item.where(linkId='COVID19-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='COVID19-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='HepA-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='HepA-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='HepB-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='HepB-1').answer.valueBoolean.count(), 0) + iif(%resource.item.where(linkId='question-group').item.where(linkId='Human-1').answer.exists(), %resource.item.where(linkId='question-group').item.where(linkId='Human-1').answer.valueString.count(), 0)).toString() + ' / 4'"
